@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using Vector.Share.Configuration;
 using Vector.Share.Data;
 using Vector.Share.Providers.Random;
@@ -46,6 +47,14 @@ namespace Vector.Share
             });
 
             services.AddControllers();
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Vector.Share",
+                    Version = "v1"
+                });
+            });
 
             services.AddDbContext<DatabaseContext>();
             services.AddScoped<IScheduledDeletionRepository, ScheduledDeletionRepository>();
@@ -71,6 +80,11 @@ namespace Vector.Share
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(options =>
+                {
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Vector.Share");
+                });
             }
             else if(env.IsProduction())
             {
