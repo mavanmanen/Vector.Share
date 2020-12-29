@@ -13,4 +13,6 @@ dotnet publish .\src\Api\Vector.Share.sln --verbosity minimal --output $api_outp
 dotnet-ef database update --project .\src\Api\Vector.Share\Vector.Share.csproj --connection "Data Source=$api_output\files.db"
 
 # Build vuejs app
-yarn --cwd .\src\App\ build --dest $app_output
+$cwd = ".\src\App"
+yarn --cwd $cwd install
+yarn --cwd $cwd build --dest $app_output
