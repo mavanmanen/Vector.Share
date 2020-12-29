@@ -8,8 +8,6 @@
             {{ boxText }}
             <span>{{ sizeText }}</span>
           </span>
-          
-
           <select v-model="model.lifetime" class="custom-select">
             <option :value="lifetimeOptions.D1">1 day</option>
             <option :value="lifetimeOptions.D7">1 week</option>
