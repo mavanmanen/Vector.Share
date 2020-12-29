@@ -1,0 +1,221 @@
+@use "sass:map";
+@use "sass:string";
+
+$themes: (
+  "living-coral--pacific-coast": (
+    "foreground": "#FC766AFF",
+    "background": "#5B84B1FF"
+  ),
+  "ultra-violet--blooming-dahlia": (
+    "foreground": "#5F4B8BFF",
+    "background": "#E69A8DFF"
+  ),
+  "turquoise--warm-sand": (
+    "foreground": "#42EADDFF",
+    "background": "#CDB599FF"
+  ),
+  "black--white": (
+    "foreground": "#000000FF",
+    "background": "#FFFFFFFF"
+  ),
+  "blue--orange": (
+    "foreground": "#00A4CCFF",
+    "background": "#F95700FF"
+  ),
+  "sailor-blue--mint": (
+    "foreground": "#00203FFF",
+    "background": "#ADEFD1FF"
+  ),
+  "gray--lime-punch": (
+    "foreground": "#606060FF",
+    "background": "#D6ED17FF"
+  ),
+  "cherry-tomato--rapture-rose": (
+    "foreground": "#ED2B33FF",
+    "background": "#D85A7FFF"
+  ),
+  "forest-green--moss-green": (
+    "foreground": "#2C5F2D",
+    "background": "#97BC62FF"
+  ),
+  "royal-blue--peach": (
+    "foreground": "#00539CFF",
+    "background": "#EEA47FFF"
+  ),
+  "electric-blue-lemonade--aquamarine": (
+    "foreground": "#0063B2FF",
+    "background": "#9CC3D5FF"
+  ),
+  "black--blazing-yellow": (
+    "foreground": "#101820FF",
+    "background": "#FEE715FF"
+  ),
+  "pale-green--bubblegum-pink": (
+    "foreground": "#CBCE91FF",
+    "background": "#EA738DFF"
+  ),
+  "copper-coin--aged-copper": (
+    "foreground": "#B1624EFF",
+    "background": "#5CC8D7FF"
+  ),
+  "sky-blue--white": (
+    "foreground": "#89ABE3FF",
+    "background": "#FCF6F5FF"
+  ),
+  "dusky-citron--cool-gray": (
+    "foreground": "#E3CD81FF",
+    "background": "#B1B3B3FF"
+  ),
+  "black--orange": (
+    "foreground": "#101820FF",
+    "background": "#F2AA4CFF"
+  ),
+  "brown-sugar--beige": (
+    "foreground": "#A07855FF",
+    "background": "#D4B996FF"
+  ),
+  "turkish-sea--silver": (
+    "foreground": "#195190FF",
+    "background": "#A2A2A1FF"
+  ),
+  "royal-purple--ice-flow": (
+    "foreground": "#603F83FF",
+    "background": "#C7D3D4FF"
+  ),
+  "island-green--white": (
+    "foreground": "#2BAE66FF",
+    "background": "#FCF6F5FF"
+  ),
+  "pink-salt--charcoal-gray": (
+    "foreground": "#FAD0C9FF",
+    "background": "#6E6E6DFF"
+  ),
+  "black--cherry-tomato": (
+    "foreground": "#2D2926FF",
+    "background": "#E94B3CFF"
+  ),
+  "mango-mojito--terrarium-moss": (
+    "foreground": "#DAA03DFF",
+    "background": "#616247FF"
+  ),
+  "space-cherry--white": (
+    "foreground": "#990011FF",
+    "background": "#FCF6F5FF"
+  ),
+  "hunter-green--raspberry": (
+    "foreground": "#435E55FF",
+    "background": "#D64161FF"
+  ),
+  "pale-green--purple-sapphire": (
+    "foreground": "#CBCE91FF",
+    "background": "#76528BFF"
+  ),
+  "pink--navy-blue": (
+    "foreground": "#FAEBEFFF",
+    "background": "#333D79FF"
+  ),
+  "bright-red--cyber-yellow": (
+    "foreground": "#F93822FF",
+    "background": "#FDD20EFF"
+  ),
+  "sweet-corn--toffee": (
+    "foreground": "#F2EDD7FF",
+    "background": "#755139FF"
+  ),
+  "dark-green--black": (
+    "foreground": "#006B38FF",
+    "background": "#101820FF"
+  ),
+  "orange--white": (
+    "foreground": "#F95700FF",
+    "background": "#FFFFFFFF"
+  ),
+  "aspen-gold--princess-blue": (
+    "foreground": "#FFD662FF",
+    "background": "#00539CFF"
+  ),
+  "soybean--eclipse": (
+    "foreground": "#D7C49EFF",
+    "background": "#343148FF"
+  ),
+  "cantaloupe--blush": (
+    "foreground": "#FFA177FF",
+    "background": "#F5C7B8FF"
+  ),
+  "rose-pink--purple": (
+    "foreground": "#DF6589FF",
+    "background": "#3C1053FF"
+  ),
+  "mellow-yellow--verdant-green": (
+    "foreground": "#FFE77AFF",
+    "background": "#2C5F2DFF"
+  ),
+  "fiesta--jester-red": (
+    "foreground": "#DD4132FF",
+    "background": "#9E1030FF"
+  ),
+  "powdered-sugar--silver": (
+    "foreground": "#F1F4FFFF",
+    "background": "#A2A2A1FF"
+  ),
+  "lemon-tonic--purple": (
+    "foreground": "#FCF951FF",
+    "background": "#422057FF"
+  ),
+  "teal--fiery-red": (
+    "foreground": "#4B878BFF",
+    "background": "#D01C1FFF"
+  ),
+  "nebulosity--pink-yarrow": (
+    "foreground": "#1C1C1BFF",
+    "background": "#CE4A7EFF"
+  ),
+  "blue-atoll--vibrant-yellow": (
+    "foreground": "#00B1D2FF",
+    "background": "#FDDB27FF"
+  ),
+  "lime-green--orange": (
+    "foreground": "#79C000FF",
+    "background": "#FF7F41FF"
+  ),
+  "inca-gold--scarlet-sage": (
+    "foreground": "#BD7F37FF",
+    "background": "#A13941FF"
+  ),
+  "pale-lilac--lime-green": (
+    "foreground": "#E3C9CEFF",
+    "background": "#9FC131FF"
+  ),
+  "dark-blue--red": (
+    "foreground": "#00239CFF",
+    "background": "#E10600FF"
+  ),
+);
+
+@function arrow($colorstring) {
+  $color: string.slice($colorstring, 2);
+  $url: "data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23" + $color + "%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E";
+  @return url(#{$url});
+}
+
+@mixin theme($key, $foreground, $background) {
+  [data-theme='#{$key}'] {
+    --background: #{$background};
+    --foreground: #{$foreground};
+    --dropdown-arrow: #{arrow($foreground)};
+  }
+}
+
+$theme-names: "";
+@each $key, $values in $themes {
+  $theme-names: $theme-names + $key + ' ';
+  $background: map.get($values, "background");
+  $foreground: map.get($values, "foreground");
+
+  @include theme($key, $foreground, $background);
+  @include theme($key + '-inverted', $background, $foreground);
+}
+
+html {
+  --theme-names: #{$theme-names};
+}
