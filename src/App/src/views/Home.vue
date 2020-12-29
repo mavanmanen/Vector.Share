@@ -1,35 +1,32 @@
 <template>
   <div>
-    <div id="container">
-      <div id="upload-form" class="box">
-        <input id="file" type="file" @change="onFileChange" />
-        <label for="file">
-          <span>
-            {{ boxText }}
-            <span>{{ sizeText }}</span>
-          </span>
-          <select v-model="model.lifetime" class="custom-select">
-            <option :value="lifetimeOptions.D1">1 day</option>
-            <option :value="lifetimeOptions.D7">1 week</option>
-            <option :value="lifetimeOptions.M1">1 month</option>
-          </select>
-          <button type="button" @click="uploadOnClick">Upload</button>
-        </label>
-      </div>
-      <div id="progress-overlay" class="box" :class="progressClass">
-        <a href="" @click="copyLink">Click to copy link</a>
-        <input id="hiddenUrl" ref="hiddenUrl" type="text" v-model="uploadedUrl" />
-      </div>
+    <div id="upload-form" class="box">
+      <input id="file" type="file" @change="onFileChange" />
+      <label for="file">
+        <span>
+          <span>{{ boxText }}</span>
+          <span>{{ sizeText }}</span>
+        </span>
+        <select v-model="model.lifetime" class="custom-select">
+          <option :value="lifetimeOptions.D1">1 day</option>
+          <option :value="lifetimeOptions.D7">1 week</option>
+          <option :value="lifetimeOptions.M1">1 month</option>
+        </select>
+        <button type="button" @click="uploadOnClick">Upload</button>
+      </label>
     </div>
 
-    <footer>Whatever you upload is your own responsibility, I don't fucking care.</footer>
+    <div id="progress-overlay" ref="progress-overlay" @click="copyLink" class="box" :class="progressClass">
+      <span >Click to copy link</span>
+      <input id="hidden-url" ref="hidden-url" type="text" v-model="uploadedUrl" />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue } from 'vue-class-component'
 import ApiService from '../api-service'
-import { eventBus } from '../main';
+import { eventBus } from '../main'
 import { FileLifetime, UploadModel } from '../models'
 
 export default class Home extends Vue {
@@ -84,12 +81,17 @@ export default class Home extends Vue {
   }
 
   async uploadOnClick() {
+    const overlay = this.$refs['progress-overlay'] as HTMLElement
+    overlay.style.visibility = 'visible'
+
     const result = await this.api.uploadAsync(this.model)
+
     if(result == null) {
       return
     }
 
     this.uploadedUrl = result.url
+    overlay.style.cursor = 'pointer'
   }
 
   updateProgress(percentCompleted: number) {
@@ -102,7 +104,7 @@ export default class Home extends Vue {
 
   copyLink(event: Event) {
     event.preventDefault()
-    const urlField = this.$refs.hiddenUrl as HTMLInputElement
+    const urlField = this.$refs['hidden-url'] as HTMLInputElement
     urlField.select()
     document.execCommand('copy')
     this.reset()
@@ -114,6 +116,9 @@ export default class Home extends Vue {
       file: null
     }
     this.progressClass = this.makeProgressClass(0)
+    const overlay = this.$refs['progress-overlay'] as HTMLElement
+    overlay.style.visibility = 'hidden'
+    overlay.style.cursor = 'progress'
     this.boxText = this._defaultBoxText
     this.sizeText = this._defaultSizeText
     this.uploadedUrl = ''
@@ -122,122 +127,103 @@ export default class Home extends Vue {
 </script>
 
 <style lang="scss">
-$footer-height: 40px;
-$border: solid 2px var(--foreground);
-$box-size: 450px;
-$border-radius: $box-size / 30;
+.box {
+  height: variables.$box-size;
+  width: variables.$box-size;
+  border-radius: variables.$border-radius;
+  border: variables.$border;
+  position: absolute;
+}
 
-#container{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: calc(100vh - (#{$footer-height} + 2px));
-  width: 100vw;
-  color: var(--foreground);
-  background-color: var(--background);
-
-  .box {
-    height: $box-size;
-    width: $box-size;
-    border-radius: $border-radius;
-    border: $border;
+#upload-form {
+  #file {
+    opacity: 0;
+    width: 0;
+    height: 0;
     position: absolute;
   }
 
-  #upload-form {
-    input[type="file"] {
-      opacity: 0;
-      width: 0;
-      height: 0;
-      position: absolute;
-    }
-
-    label {
-      height: $box-size;
-      width: $box-size;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      font-size: 2rem;
-      text-align: center;
-
-      * {
-        width: 100%;
-      }
-
-      & > span {
-        display: flex;
-        flex-grow: 1;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        
-        span {
-          font-size: .8em;
-          margin-top: 15px;
-        }
-      }
-
-      select {
-        height: $box-size / 6;
-        border-top: $border;
-        border-bottom: $border;
-        background-size: 40px auto, 100%;
-        text-align-last: center;
-      }
-
-      button {
-        height: $box-size / 6;
-        border-radius: 0 0 $border-radius $border-radius;
-        border: none;
-        background: transparent;
-        font-size: inherit;
-        font-family: inherit;
-        color: inherit;
-
-        &:focus {
-          outline: none;
-        }
-      }      
-    }
-  }
-
-  #progress-overlay {
-    pointer-events: none;
+  label {
+    height: variables.$box-size;
+    width: variables.$box-size;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    flex-direction: column;
     font-size: 2rem;
+    text-align: center;
+    cursor: pointer;
 
-    &.progress-100 a {
-        visibility: visible;
+    & > span {
+      display: flex;
+      flex-grow: 1;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      overflow-wrap: anywhere;
+      
+      & > span {
+        padding: 0 20px;
+
+        &:nth-child(2) {
+          margin-top: 15px;
+          font-size: .8em;
+        }
+      }
     }
 
-    a {
-      visibility: hidden;;
-      pointer-events: all;
-      color: var(--background);
-      text-decoration: none;
+    select, button {
+      width: 100%;
+      height: variables.$box-size / 6;
     }
 
-    #hiddenUrl {
-      position: absolute;
-      opacity: 0;
+    select {
+      border-top: variables.$border;
+      border-bottom: variables.$border;
+      background-size: 40px auto, 100%;
+      text-align-last: center;
     }
+
+    button {
+      border-radius: 0 0 variables.$border-radius variables.$border-radius;
+      border: none;
+      background: transparent;
+      font-size: inherit;
+      font-family: inherit;
+      color: inherit;
+      cursor: pointer;
+
+      &:focus {
+        outline: none;
+      }
+    }      
   }
 }
 
-footer {
-  border-top: $border;
-  height: $footer-height;
+#progress-overlay {
+  visibility: hidden;
   display: flex;
   justify-content: center;
-  justify-items: center;
-  width: 100%;
-  line-height: $footer-height;
-  font-size: 1.2rem;
-  color: var(--foreground);
-  background-color: var(--background);
+  align-items: center;
+  font-size: 2rem;
+  cursor: progress;
+
+  &.progress-100 span {
+      visibility: visible;
+  }
+
+  span {
+    visibility: hidden;
+    pointer-events: all;
+    color: var(--background);
+    text-decoration: none;
+    cursor: inherit;
+  }
+
+  #hidden-url {
+    position: absolute;
+    opacity: 0;
+    cursor: inherit;
+  }
 }
 </style>

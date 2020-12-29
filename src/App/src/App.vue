@@ -1,17 +1,18 @@
 <template>
   <div :data-theme="selectedThemeKey">
-    <div id="options">
-      <span id="inverter" @click="onInverterClick"></span>
-      <select id="theme-selector" class="custom-select" v-model="selectedTheme">
+    <div id="theme-selector">
+      <span @click="onInverterClick"></span>
+      <select class="custom-select" v-model="selectedTheme">
         <option v-for="theme in themes" :key="theme.key" :value="theme.key">{{ theme.name }}</option>
       </select>
     </div>
-    <router-view />
+    <router-view id="container"/>
+    <footer>Whatever you upload is your own responsibility, I don't fucking care.</footer>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-class-component";
+import { Vue } from 'vue-class-component'
 
 interface Theme {
   key: string;
@@ -31,7 +32,7 @@ export default class App extends Vue {
   public set selectedTheme(value) {
     const key = value.replaceAll('-inverted', '')
     this._selectedTheme = this._themes.find(theme => theme.key == key) as Theme
-    this.inverted = false;
+    this.inverted = false
   }
   public get selectedThemeKey() {
     return this.inverted ? `${this._selectedTheme.key}-inverted` : this._selectedTheme.key
@@ -73,29 +74,53 @@ html, body {
   font-family: 'Lato', sans-serif;
 }
 
-#options {
+#container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - (#{variables.$footer-height} + 2px));
+  width: 100vw;
+  color: var(--foreground);
+  background-color: var(--background);
+}
+
+#theme-selector {
   position: absolute;
   display: flex;
   flex-direction: row;
   align-items: center;
   left: 10px;
   top: 10px;
+
+  & > span {
+    display: flex;
+    $size: 40px;
+    height: $size;
+    width: $size;
+    background-color: var(--foreground);
+    border-radius: $size;
+    cursor: pointer;
+  }
+
+  & > select {
+    display: flex;
+    padding: 5px 0 10px 10px;
+    font-size: 1.4rem;
+    background: none;
+    text-transform: capitalize;
+  }
 }
 
-#inverter {
+footer {
+  border-top: variables.$border;
+  height: variables.$footer-height;
   display: flex;
-  $size: 40px;
-  height: $size;
-  width: $size;
-  background-color: var(--foreground);
-  border-radius: $size;
-}
-
-#theme-selector {
-  display: flex;
-  padding: 5px 0 10px 10px;
-  font-size: 1.4rem;
-  background: none;
-  text-transform: capitalize;
+  justify-content: center;
+  justify-items: center;
+  width: 100%;
+  line-height: variables.$footer-height;
+  font-size: 1.2rem;
+  color: var(--foreground);
+  background-color: var(--background);
 }
 </style>

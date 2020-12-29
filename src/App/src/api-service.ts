@@ -1,6 +1,6 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from "axios"
-import { eventBus } from "./main"
-import { UploadModel, UploadResultModel } from "./models"
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
+import { eventBus } from './main'
+import { UploadModel, UploadResultModel } from './models'
 
 export default class ApiService {
     private _axios: AxiosInstance
@@ -13,8 +13,8 @@ export default class ApiService {
 
     public async uploadAsync(model: UploadModel): Promise<UploadResultModel | null> {
         const formData = new FormData()
-        formData.append("filedata", model.file as Blob)
-        formData.append("lifetime", model.lifetime.toString())
+        formData.append('filedata', model.file as Blob)
+        formData.append('lifetime', model.lifetime.toString())
 
         const config: AxiosRequestConfig = {
             headers: {
