@@ -11,6 +11,7 @@ if(Test-Path $output) {
 # Build api
 dotnet publish .\src\Api\Vector.Share.sln --verbosity minimal --output $api_output --configuration 'Release' --no-self-contained --runtime linux-x64 -p:PublishSingleFile=true
 dotnet-ef database update --project .\src\Api\Vector.Share\Vector.Share.csproj --connection "Data Source=$api_output\files.db"
+cp .\src\Api\Vector.Share\web.config $api_output\web.config
 
 # Build vuejs app
 $cwd = ".\src\App"
