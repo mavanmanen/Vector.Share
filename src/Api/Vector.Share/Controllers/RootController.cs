@@ -11,7 +11,7 @@ using Vector.Share.Services;
 
 namespace Vector.Share.Controllers
 {
-    [ApiController, Route("/api")]
+    [ApiController, Route("/")]
     public class RootController : ControllerBase
     {
         private readonly IOptions<ServerConfiguration> _configuration;
