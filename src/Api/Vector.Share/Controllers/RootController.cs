@@ -42,8 +42,8 @@ namespace Vector.Share.Controllers
                 return NotFound();
             }
 
-            byte[] fileData = await  System.IO.File.ReadAllBytesAsync(file.Path);
-            return File(fileData, file.ContentType);
+            FileStream fileStream = System.IO.File.OpenRead(file.Path);
+            return File(fileStream, file.ContentType, true);
         }
 
         [HttpGet, HttpPost, Route("delete/{identifier}")]
@@ -65,8 +65,8 @@ namespace Vector.Share.Controllers
         [HttpPost("upload"), RequestFormLimits(MultipartBodyLengthLimit = 1073741274), RequestSizeLimit(1073741274)]
         public async Task<IActionResult> UploadAsync([FromForm] UploadModel model)
         {
-            byte[] fileData = await model.FileData.GetFileDataAsync();
-            UploadedFile file = await _fileService.SaveFileAsync(model.FileData.FileName, fileData, model.Lifetime, model.FileData.ContentType);
+            await using Stream fileStream = model.FileData.OpenReadStream();
+            UploadedFile file = await _fileService.SaveFileAsync(model.FileData.FileName, fileStream, model.Lifetime, model.FileData.ContentType);
             await _schedulerService.ScheduleDeletionAsync(file.Identifier, file.Lifetime);
 
             var result = new UploadResultModel

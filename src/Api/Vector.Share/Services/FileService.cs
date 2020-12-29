@@ -12,7 +12,7 @@ namespace Vector.Share.Services
 {
     public interface IFileService
     {
-        Task<UploadedFile> SaveFileAsync(string filename, byte[] data, FileLifetime lifetime, string contentType);
+        Task<UploadedFile> SaveFileAsync(string filename, Stream fileStream, FileLifetime lifetime, string contentType);
         Task<UploadedFile> GetFileAsync(string identifier);
         Task DeleteFileAsync(string identifier);
         Task DeleteMultipleFilesAsync(string[] identifiers);
@@ -37,13 +37,16 @@ namespace Vector.Share.Services
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<UploadedFile> SaveFileAsync(string filename, byte[] data, FileLifetime lifetime, string contentType)
+        public async Task<UploadedFile> SaveFileAsync(string filename, Stream fileStream, FileLifetime lifetime, string contentType)
         {
             Directory.CreateDirectory(_configuration.Value.FileFolder);
             string identifier = _identifierService.GenerateIdentifier();
             var path = $"{_configuration.Value.FileFolder}/{identifier}-{filename}";
             _logger.LogInformation($"Saving file: {path}");
-            await File.WriteAllBytesAsync(path, data);
+
+            await using var fs = new FileStream(path, FileMode.CreateNew, FileAccess.Write);
+            await fileStream.CopyToAsync(fs);
+            
 
             var model = new UploadedFile
             {
