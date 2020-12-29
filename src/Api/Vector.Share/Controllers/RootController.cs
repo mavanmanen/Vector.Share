@@ -6,7 +6,6 @@ using Microsoft.Extensions.Options;
 using Vector.Share.Configuration;
 using Vector.Share.Data.Models;
 using Vector.Share.DTO;
-using Vector.Share.Extensions;
 using Vector.Share.Services;
 
 namespace Vector.Share.Controllers
@@ -46,7 +45,7 @@ namespace Vector.Share.Controllers
             return File(fileStream, file.ContentType, true);
         }
 
-        [HttpGet, HttpPost, Route("delete/{identifier}")]
+        [HttpDelete, Route("{identifier}")]
         public async Task<IActionResult> DeleteAsync([FromRoute] string identifier)
         {
             try
