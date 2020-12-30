@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime;
 using Vector.Share.DTO;
 
 namespace Vector.Share.Data.Models
@@ -13,5 +14,6 @@ namespace Vector.Share.Data.Models
         public DateTime Uploaded { get; set; }
         public string ContentType { get; set; }
         public string OriginalFilename { get; set; }
+        public string Extension { get; set; }
     }
 }

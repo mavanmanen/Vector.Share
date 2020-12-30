@@ -46,7 +46,7 @@ namespace Vector.Share.Services
 
             await using var fs = new FileStream(path, FileMode.CreateNew, FileAccess.Write);
             await fileStream.CopyToAsync(fs);
-            
+            var fileInfo = new FileInfo(path);
 
             var model = new UploadedFile
             {
@@ -55,7 +55,8 @@ namespace Vector.Share.Services
                 Lifetime = lifetime,
                 Uploaded = DateTime.UtcNow,
                 ContentType = contentType,
-                OriginalFilename = filename
+                OriginalFilename = filename,
+                Extension = fileInfo.Extension
             };
 
             await _repository.AddAsync(model);

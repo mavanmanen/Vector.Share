@@ -27,8 +27,8 @@ namespace Vector.Share.Controllers
             _schedulerService = schedulerService ?? throw new ArgumentNullException(nameof(schedulerService));
         }
 
-        [HttpGet("{identifier}")]
-        public async Task<IActionResult> GetAsync([FromRoute] string identifier)
+        [HttpGet("{identifier}.{extension}")]
+        public async Task<IActionResult> GetAsync([FromRoute] string identifier, [FromRoute] string extension)
         {
             UploadedFile file;
 
@@ -70,7 +70,7 @@ namespace Vector.Share.Controllers
 
             var result = new UploadResultModel
             {
-                Url = $"{_configuration.Value.ServerName}/{file.Identifier}"
+                Url = $"{_configuration.Value.ServerName}/{file.Identifier}{file.Extension}"
             };
 
             return Ok(result);
