@@ -16,7 +16,7 @@
    - `-Output` to specify the output directory, by default this is: `./output`
    - `-Runtime` to specify the NET 5.0 runtime, by default this is: `linux-x64`
 
-4. Deploy the files in the output directory to your server and set up your webserver and service file.
+4. Deploy the files in the output directory to your server and set up your webserver and service file. Example files are provided in the examples folder.
 
 ## Requirements
 1. Yarn
