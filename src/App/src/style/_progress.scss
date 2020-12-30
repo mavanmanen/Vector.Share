@@ -1,5 +1,5 @@
 @for $i from 0 through 100 {
   .progress-#{$i} {
-    background: linear-gradient(to right, var(--foreground) $i * 1%, transparent 0);
+    background: linear-gradient(to right, var(--foreground) $i * 1%, transparent 0) !important;
   }
 }
