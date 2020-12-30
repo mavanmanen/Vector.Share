@@ -12,11 +12,11 @@
 
 2. In `src/App` run: `yarn install`
 
-3. Run `build.ps1`, optionally with the following inputs:
+3. Run `build.ps1`, optionally with the following parameters:
    - `-Output` to specify the output directory, by default this is: `./output`
    - `-Runtime` to specify the NET 5.0 runtime, by default this is: `linux-x64`
 
-4. Deploy the files in the output directory to your server and set up your webserver and service file. Example files are provided in the examples folder.
+4. Deploy the files in the output directory to your server and set up your webserver and service file. Example files for nginx and a systemd service file are provided in the examples folder.
 
 ## Requirements
 1. Yarn
